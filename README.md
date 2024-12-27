@@ -1,4 +1,4 @@
-Prime sieve running serially on cpu vs paralell on gpu
+Prime sieve running serially on cpu vs parallel on gpu
 
 takes same if not longer time on gpu. It takes up O(n) bytes so biggest prime is about 2e9
 
