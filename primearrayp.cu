@@ -5,19 +5,22 @@
 #include <cstdint>
 
 __global__
-void primemod(bool* a, float x)
+void primemod(bool* a, float x, float n)
 {	
-	
-	int i = threadIdx.x + blockIdx.x * blockDim.x + 2;
-	if(i<x)
+	int i = threadIdx.x + blockIdx.x * blockDim.x + 2;	  
+
+	if(i<x && a[i])
 	{
-		for(int k = i; k < x; k++)
+		for(int m = 2; (m * i) <= x; m++)
+		{
+			if(!a[i])
 			{
-				if(k%i==0 && i!=k)
-				{
-					a[k]=false;
-				}
+
+				break;
 			}
+			a[i * m] = false;
+		}
+		
 	}
 	return;
 }
@@ -38,18 +41,21 @@ int main(int argc,char *argv[]){
         A[i] = 1;
     }
 	
-	//std::cout<<"sqrt of " << x << " is " << n << "\n";
+	std::cout<<"sqrt of " << x << " is " << n << "\n";
 
 	
-	int blockSize = 1024;
+	int blockSize = 8;
 	int numBlocks = (n + blockSize - 1) / blockSize;
 	
-	primemod<<<numBlocks,blockSize>>>(A,x);
+	std::cout <<" numblocks " << numBlocks << " ";
+	
+	primemod<<<numBlocks,blockSize>>>(A,x,n);
+
 
 	cudaDeviceSynchronize();
 	
 	int primecount = 0;
-	for(int i = 2; i < x; i++)
+	for(int i = 2; i <= x; i++)
 	{
 		if(A[i]==1)
 		{
