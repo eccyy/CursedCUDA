@@ -11,3 +11,6 @@ only run on prime numbers you already know instead of breaking if another thread
 
 both:
 run with O(√n) space complexity by using segmented sieve
+
+edit:
+primeBucket now uses segments to use less memory, not as low as can go but memory access seems to be the issue this time 
